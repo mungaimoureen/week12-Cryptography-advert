@@ -1,0 +1,215 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+1.INTRODUCTION
+
+a) Defining the Question
+
+To identify the individuals who are most likely to click on the ad.
+
+
+b) Defining the metric of success
+
+Finding the audience who are going to be interested in the product advertised.
+
+
+c) Understanding the Context
+
+By looking at the history of advertisement, we are going to examine the market and get knowledge of the target audience and how to target them.
+
+
+d) Recording the experimental design
+
+Data preparation and cleaning;
+• Loading libraries and data table
+• Check for missing values and duplicates
+• Check for outliers and anomalies
+
+Performing Exploratory Data Analysis;
+• Uni variate Analysis
+• Bivariate Analysis
+
+Conclusions
+Recommendation
+
+
+
+2. DATA PREPARATION AND CLEANING
+
+#loading our dataset
+data <- read.csv('http://bit.ly/IPAdvertisingData')
+head(data)
+
+
+#checking the dataset structure
+str(data)
+
+
+# rename column names to a uniform case.
+
+
+names(data)[names(data) == "Ad.Topic.Line"] <- "ad_topic_line"
+names(data)[names(data) == "City"] <- "city"
+names(data)[names(data) == "Male"] <- "male"
+names(data)[names(data) == "Country"] <- "country"
+names(data)[names(data) == "Timestamp"] <- "timestamp"
+names(data)[names(data) == "Clicked.on.Ad"] <- "clicked_on_ad"
+names(data)[names(data) == "Daily.Time.Spent.on.Site"] <- "daily_time_spent"
+names(data)[names(data) == "Age"] <- "age"
+names(data)[names(data) == "Area.Income"] <- "area_income"
+names(data)[names(data) == "Daily.Internet.Usage"] <- "daily_internet_usage"
+
+#lets review our data to see the changes.
+#Its established changes have been made.
+
+head(data)
+
+
+#checking for missing values
+colSums(is.na(data))
+
+#There are no missing values
+
+
+#checking for duplicates
+anyDuplicated(data)
+
+#There are no duplicates
+
+# checking for outliers in our numerical values
+boxplot(data$daily_internet_usage)
+
+boxplot(data$daily_time_spent)
+
+boxplot(data$area_income)
+
+boxplot(data$age)
+
+#there are no outliers in the variables except in area income but we will keep them because the data is true, income will vary for everyone.
+
+3.EXPLORATORY DATA ANALYSIS
+
+Univariate analysis
+
+# We are going to look at variable distribution of our data by analysing the min,max,mean,median and quartile distributions of the variables.
+
+# Getting the minimum, maximum, mean,median and quartiles for the variable daily_internet_usage
+summary(data$daily_internet_usage)
+
+# checking the distribution
+hist(data$daily_internet_usage)
+
+#variance
+var(data$daily_internet_usage)
+
+#standard deviation
+sd(data$daily_internet_usage)
+
+#interquartile range
+quantile(data$daily_internet_usage, 0.75) - quantile(data$daily_internet_usage, 0.25)
+
+#installing package 'moments'
+library(moments)
+
+# finding the kurtosis
+kurtosis(data$daily_internet_usage)
+
+
+#checking for skewness
+skewness(data$daily_internet_usage)
+
+#Distribution, Variance, Standard deviation,range,kurtosis,skewness.
+
+# checking the distribution
+hist(data$daily_time_spent)
+
+# checking for variance
+var(data$daily_time_spent)
+
+# getting standard deviation
+sd(data$daily_time_spent)
+
+# checking for skewness
+skewness(data$daily_time_spent)
+
+
+# checking kurtosis
+kurtosis(data$daily_time_spent)
+
+
+# Checking for different frequencies on our variables. 
+# checking on the difference in people who clicked the ad and none
+ad_column <- table(data$clicked_on_ad)
+print(ad_column)
+
+# most occuring cities
+library(plyr)
+count_city <- count(data$city)
+count_city_head <- head(arrange(count_city, desc(freq)))
+count_city_head
+
+# most occuring countries
+count_country <- count(data$country)
+count_country_head <- head(arrange(count_country, desc(freq)))
+count_country_head
+
+
+
+Bivariate analysis
+
+# Selecting our numerical variables to check the correlation.
+numerical <- data[,1:4]
+numerical <- cbind(numerical, data[c('male')])
+head(numerical)
+
+
+# Creating a correlation matrix
+numerical.cor=cor(numerical,method=c('pearson'))
+numerical.cor
+
+
+# Installing the correlation plot to visualize the correlation coefficients.
+library(corrplot)
+
+
+#visualization
+corrplot(numerical.cor)
+
+# importing library
+library(ggplot2)
+
+
+# creating a scatter plot of area income and age
+ggplot(data,
+aes(x = area_income,
+y = age)) +
+geom_point()
+
+
+# creating a scatter plot of time spent and age
+ggplot(data,
+aes(x = daily_time_spent,
+y = age)) +
+geom_point()
+
+
+4.CONCLUSION
+
+A) The female gender had the highest numbers who visited the blog.
+
+B) The age group between years 25 and 40 had the highest visits.
+
+C) The income range of the highest visits was in the range of 50k to 70k.
+
+D) The average amount of time spent by those who visited the site was between 75 to 85.
+
+5.RECOMMENDATION
+
+The largest audience for the cryptography course would be the people who would want to seek an extra source of income and it happens that the ages of 25 and 40 are often seeking somewhere to make extra coins,
+
+From the analysis we confirm our target audience spent most time compared to any other age group, I would therefore recommend on creating content that  will apeall to the group to reach a large target.
+
+
+
