@@ -1,1 +1,2 @@
 # week12-Cryptography-advert
+A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. The above Rmd file is an excecution of analysis that provides insights to what audience to target.
